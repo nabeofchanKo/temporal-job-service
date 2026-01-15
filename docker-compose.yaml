@@ -1,0 +1,25 @@
+version: '3.5'
+
+services:
+  temporal-dev:
+    container_name: temporal-dev-server
+    # 【変更点】一番確実な公式サーバーイメージを使用
+    image: temporalio/server:1.24.0
+    # 開発用サーバーモード（メモリ動作・DB不要）で起動
+    entrypoint: 
+      - temporal
+      - server
+      - start-dev
+      - --ip
+      - 0.0.0.0
+      - --ui-port
+      - "8080"
+    ports:
+      - "7233:7233" # Worker用ポート
+      - "8080:8080" # ブラウザ用ポート
+    networks:
+      - temporal-network
+
+networks:
+  temporal-network:
+    driver: bridge
